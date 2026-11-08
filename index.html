@@ -1,0 +1,907 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- Configurações básicas da página -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <title>Bike Center | Sua próxima aventura começa aqui</title>
+
+  <style>
+    /* Cores principais da loja */
+    :root {
+      --dark: #111827;
+      --green: #22c55e;
+      --green-dark: #15803d;
+      --light: #f3f4f6;
+      --white: #ffffff;
+      --muted: #64748b;
+    }
+
+    /* Ajustes gerais */
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--light);
+      color: var(--dark);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; }
+    [hidden] { display: none !important; }
+
+    /* Acessibilidade */
+    :focus-visible {
+      outline: 3px solid var(--green);
+      outline-offset: 3px;
+    }
+
+    /* Cabeçalho */
+    header {
+      background: var(--dark);
+      color: white;
+      padding: 16px;
+      position: relative;
+      z-index: 5;
+    }
+    nav {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .logo {
+      color: var(--green);
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+    .menu {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      font-size: 14px;
+    }
+    .menu a:hover { color: var(--green); }
+
+    /* Botões */
+    .btn {
+      display: inline-block;
+      padding: 12px 17px;
+      background: var(--green);
+      color: #08200d;
+      border: none;
+      border-radius: 9px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .btn:hover {
+      background: #16a34a;
+      color: white;
+    }
+    .secondary {
+      background: #e5e7eb;
+      border: none;
+      border-radius: 9px;
+      padding: 11px 14px;
+    }
+    .secondary:hover { background: #cbd5e1; }
+
+    /* Banner principal */
+    .hero {
+      min-height: 390px;
+      padding: 45px 20px;
+      display: flex;
+      align-items: center;
+      color: white;
+      background:
+        linear-gradient(90deg, #07141bee, #07141b44),
+        url("https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=1400&q=85")
+        center / cover;
+    }
+    .hero-content {
+      width: 100%;
+      max-width: 1150px;
+      margin: auto;
+    }
+    .hero h1 {
+      max-width: 650px;
+      font-size: clamp(32px, 6vw, 58px);
+      line-height: 1.1;
+    }
+    .hero h1 span { color: var(--green); }
+    .hero p {
+      max-width: 530px;
+      line-height: 1.7;
+      font-size: 17px;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Organização das seções */
+    section {
+      max-width: 1200px;
+      margin: auto;
+      padding: 38px 16px;
+    }
+    h2 { font-size: 29px; }
+    .subtitle { color: var(--muted); }
+
+    /* Busca e filtros */
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 22px 0;
+    }
+    .controls input,
+    .controls select {
+      flex: 1;
+      min-width: 160px;
+      padding: 13px;
+      border: 1px solid #cbd5e1;
+      border-radius: 9px;
+      background: white;
+    }
+
+    /* Grade de produtos */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(205px, 1fr));
+      gap: 18px;
+    }
+    .card {
+      overflow: hidden;
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 3px 12px #00000012;
+      transition: transform .2s;
+    }
+    .card:hover { transform: translateY(-4px); }
+    .card-image {
+      width: 100%;
+      height: 175px;
+      object-fit: cover;
+      background: #e5e7eb;
+      cursor: pointer;
+    }
+    .card-body { padding: 15px; }
+    .card h3 {
+      margin: 5px 0 9px;
+      font-size: 17px;
+    }
+    .card p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .price {
+      color: var(--green-dark);
+      font-size: 21px;
+      font-weight: bold;
+    }
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 13px;
+    }
+    .actions button {
+      flex: 1;
+      padding: 10px 6px;
+      font-size: 12px;
+    }
+
+    /* Serviços de oficina */
+    .services {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .service {
+      background: white;
+      border-radius: 13px;
+      padding: 22px;
+      box-shadow: 0 3px 12px #00000010;
+    }
+    .service h3 { color: var(--green-dark); }
+    .service p { line-height: 1.6; }
+
+    /* Painéis de informações */
+    .panel {
+      background: white;
+      border-radius: 14px;
+      padding: 24px;
+      line-height: 1.8;
+    }
+    .contact input,
+    .contact textarea {
+      display: block;
+      width: 100%;
+      padding: 13px;
+      margin: 12px 0;
+      border: 1px solid #cbd5e1;
+      border-radius: 9px;
+    }
+    .contact textarea { min-height: 120px; }
+
+    /* Janelas de detalhes e carrinho */
+    dialog {
+      width: min(95%, 500px);
+      max-height: 85vh;
+      overflow: auto;
+      padding: 23px;
+      border: none;
+      border-radius: 16px;
+    }
+    dialog::backdrop { background: #0009; }
+    dialog img {
+      width: 100%;
+      max-height: 270px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    dialog input[type="number"] {
+      width: 80px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    .cart-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .cart-line button { padding: 7px 11px; }
+    .dialog-actions {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+      margin-top: 17px;
+    }
+
+    /* Aviso de produto adicionado */
+    #aviso {
+      position: fixed;
+      left: 50%;
+      bottom: 25px;
+      transform: translateX(-50%);
+      background: var(--dark);
+      color: white;
+      padding: 13px 20px;
+      border-radius: 12px;
+      z-index: 30;
+      box-shadow: 0 5px 20px #0004;
+    }
+
+    /* WhatsApp flutuante */
+    .whatsapp {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 20;
+      background: #16a34a;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 15px 18px;
+      font-weight: bold;
+      box-shadow: 0 4px 16px #0004;
+    }
+
+    /* Rodapé */
+    footer {
+      background: var(--dark);
+      color: white;
+      text-align: center;
+      padding: 30px 15px;
+    }
+
+    /* Responsividade para iPhone */
+    @media (max-width: 600px) {
+      .hero { min-height: 320px; }
+      .hero h1 { font-size: 35px; }
+      .menu { gap: 10px; font-size: 12px; }
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .card-image { height: 125px; }
+      .card-body { padding: 10px; }
+      .card h3 { font-size: 14px; }
+      .price { font-size: 17px; }
+      .actions { flex-direction: column; }
+      .actions button { font-size: 12px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Cabeçalho da loja -->
+<header>
+  <nav>
+    <a class="logo" href="#inicio">🚲 BIKE CENTER</a>
+
+    <div class="menu">
+      <a href="#inicio">Início</a>
+      <a href="#produtos">Produtos</a>
+      <a href="#oficina">Oficina</a>
+      <a href="#historia">História</a>
+      <a href="#localizacao">Localização</a>
+      <a href="#contato">Contato</a>
+      <button class="btn" onclick="abrirCarrinho()">
+        🛒 <span id="contador">0</span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- Banner principal -->
+<div class="hero" id="inicio">
+  <div class="hero-content">
+    <h1>SUA PRÓXIMA <span>AVENTURA</span> COMEÇA AQUI!</h1>
+    <p>Encontre a bicicleta perfeita para explorar novos caminhos, superar desafios e viver grandes aventuras.</p>
+    <div class="hero-buttons">
+      <a class="btn" href="#produtos">Ver bicicletas</a>
+      <a class="btn" href="#oficina">Conhecer nossa oficina</a>
+    </div>
+  </div>
+</div>
+
+<!-- Catálogo de produtos -->
+<section id="produtos">
+  <h2>🚲 Nossa loja</h2>
+  <p class="subtitle">Bicicletas e acessórios para todos os estilos.</p>
+
+  <div class="controls">
+    <input id="busca" type="search" placeholder="Buscar produtos..." aria-label="Buscar produtos">
+
+    <select id="categoria" aria-label="Filtrar categoria">
+      <option value="">Todas as categorias</option>
+      <option>Mountain Bike</option>
+      <option>Speed</option>
+      <option>Elétrica</option>
+      <option>Urbana</option>
+      <option>Infantil</option>
+      <option>Acessórios</option>
+    </select>
+
+    <select id="ordem" aria-label="Ordenar produtos">
+      <option value="">Ordenar produtos</option>
+      <option value="menor">Menor preço</option>
+      <option value="maior">Maior preço</option>
+    </select>
+  </div>
+
+  <div id="lista" class="grid"></div>
+</section>
+
+<!-- Oficina -->
+<section id="oficina">
+  <h2>🔧 Oficina especializada</h2>
+  <p class="subtitle">Cuidados profissionais para sua bicicleta.</p>
+  <div id="servicos" class="services"></div>
+</section>
+
+<!-- História fictícia da loja -->
+<section id="historia">
+  <h2>📖 Nossa história</h2>
+  <div class="panel">
+    <p>A Bike Center nasceu da paixão pelo ciclismo e da vontade de aproximar mais pessoas da liberdade de pedalar.</p>
+    <p>Nossa missão é oferecer bicicletas, acessórios e serviços de qualidade, ajudando cada ciclista a encontrar o equipamento ideal para suas aventuras.</p>
+    <p><small>História demonstrativa. Substituir pelos dados reais do cliente.</small></p>
+  </div>
+</section>
+
+<!-- Localização configurável -->
+<section id="localizacao">
+  <h2>📍 Onde estamos</h2>
+  <div class="panel">
+    <p id="enderecoLoja">Endereço da loja a configurar.</p>
+    <button class="btn" onclick="abrirMapa()">Abrir Google Maps</button>
+  </div>
+</section>
+
+<!-- Contato -->
+<section id="contato">
+  <h2>📞 Fale com a Bike Center</h2>
+  <div class="panel contact">
+    <p><strong>WhatsApp:</strong> (11) 94203-8103</p>
+    <p><strong>Horário demonstrativo:</strong> segunda a sexta, das 9h às 18h.</p>
+
+    <button class="btn" onclick="abrirWhatsApp('Olá! Gostaria de informações sobre a Bike Center.')">
+      Conversar pelo WhatsApp
+    </button>
+
+    <h3>Envie uma mensagem</h3>
+    <form id="formContato">
+      <input id="nome" placeholder="Seu nome" required>
+      <input id="email" type="email" placeholder="Seu e-mail" required>
+      <input id="assunto" placeholder="Assunto" required>
+      <textarea id="mensagem" placeholder="Sua mensagem" required></textarea>
+      <button class="btn" type="submit">Preparar e-mail</button>
+    </form>
+  </div>
+</section>
+
+<!-- Janela de detalhes dos produtos -->
+<dialog id="detalhes">
+  <div id="conteudoDetalhes"></div>
+  <div class="dialog-actions">
+    <button class="secondary" onclick="document.getElementById('detalhes').close()">Fechar</button>
+  </div>
+</dialog>
+
+<!-- Janela do carrinho -->
+<dialog id="janelaCarrinho">
+  <h2>🛒 Meu carrinho</h2>
+  <div id="itensCarrinho"></div>
+  <h3 id="total">Total: R$ 0,00</h3>
+  <div class="dialog-actions">
+    <button class="btn" onclick="finalizar()">Finalizar pelo WhatsApp</button>
+    <button class="secondary" onclick="limpar()">Esvaziar</button>
+    <button class="secondary" onclick="document.getElementById('janelaCarrinho').close()">Fechar</button>
+  </div>
+</dialog>
+
+<!-- Avisos acessíveis -->
+<div id="aviso" role="status" aria-live="polite" hidden></div>
+
+<!-- Botão flutuante do WhatsApp -->
+<button class="whatsapp" onclick="abrirWhatsApp('Olá! Gostaria de conhecer a Bike Center.')">
+  WhatsApp
+</button>
+
+<!-- Rodapé -->
+<footer>
+  <h2>🚲 BIKE CENTER</h2>
+  <p>Sua próxima aventura começa aqui!</p>
+  <p>WhatsApp: (11) 94203-8103</p>
+  <p>Site demonstrativo desenvolvido pela MOSS Digital.</p>
+</footer>
+
+<script>
+  // Configurações da loja.
+  // O número já está configurado com código do Brasil.
+  const CONFIG = {
+    whatsapp: "5511942038103",
+    email: "",
+    endereco: ""
+  };
+
+  // Fotos externas de referência.
+  // Algumas serão reutilizadas entre produtos.
+  const fotos = [
+    "photo-1485965120184-e220f721d03e",
+    "photo-1576435728678-68d0fbf94e91",
+    "photo-1541625602330-2277b4c461de",
+    "photo-1511994298241-608e28f14fde",
+    "photo-1507035895480-2b3156c31fc8",
+    "photo-1558981806-ec527fa84c39"
+  ];
+
+  // Monta a URL da fotografia.
+  function imagem(i) {
+    return "https://images.unsplash.com/" +
+      fotos[i % fotos.length] + "?w=600&q=80";
+  }
+
+  // Catálogo com 30 produtos e preços demonstrativos.
+  const dados = [
+    ["Mountain Bike Aro 29","Mountain Bike",2990],
+    ["Mountain Bike Full Suspension","Mountain Bike",5490],
+    ["Bicicleta Speed Carbon","Speed",8990],
+    ["Bicicleta Gravel Adventure","Speed",4790],
+    ["Bicicleta Urbana Comfort","Urbana",1890],
+    ["Bicicleta Elétrica City","Elétrica",8290],
+    ["Bicicleta Elétrica MTB","Elétrica",11990],
+    ["Bicicleta Infantil Aro 16","Infantil",690],
+    ["Bicicleta Infantil Aro 20","Infantil",990],
+    ["Bicicleta BMX Freestyle","Urbana",1590],
+    ["Bicicleta Dobrável","Urbana",2490],
+    ["Bicicleta Híbrida","Urbana",3290],
+    ["Mountain Bike Feminina","Mountain Bike",2790],
+    ["Bicicleta de Passeio","Urbana",1490],
+    ["Bicicleta de Triathlon","Speed",12990],
+    ["Bicicleta Speed Alumínio","Speed",3990],
+    ["Bicicleta Fat Bike","Mountain Bike",4990],
+    ["Bicicleta de Cicloturismo","Urbana",4590],
+    ["Bicicleta Urbana Premium","Urbana",3590],
+    ["Mountain Bike Pro Carbon","Mountain Bike",14990],
+    ["Capacete de Ciclismo","Acessórios",249.90],
+    ["Luvas Esportivas","Acessórios",89.90],
+    ["Farol LED Recarregável","Acessórios",149.90],
+    ["Cadeado de Segurança","Acessórios",79.90],
+    ["Garrafa Térmica","Acessórios",69.90],
+    ["Suporte para Celular","Acessórios",59.90],
+    ["Bomba de Ar Portátil","Acessórios",89.90],
+    ["Bolsa de Selim","Acessórios",99.90],
+    ["Óculos de Ciclismo","Acessórios",129.90],
+    ["Kit de Ferramentas","Acessórios",159.90]
+  ];
+
+  // Converte cada produto em objeto.
+  const produtos = dados.map((d,i) => ({
+    id: i + 1,
+    nome: d[0],
+    categoria: d[1],
+    preco: d[2],
+    foto: imagem(i)
+  }));
+
+  // Recupera os itens salvos anteriormente.
+  let carrinho = {};
+
+  try {
+    carrinho = JSON.parse(
+      localStorage.getItem("bikeCenterCarrinho")
+    ) || {};
+  } catch (erro) {
+    carrinho = {};
+  }
+
+  // Formata números como moeda brasileira.
+  function dinheiro(valor) {
+    return valor.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL"
+    });
+  }
+
+  // Mostra uma mensagem temporária na tela.
+  let avisoTimer;
+
+  function avisar(mensagem) {
+    const aviso = document.getElementById("aviso");
+    aviso.textContent = mensagem;
+    aviso.hidden = false;
+
+    clearTimeout(avisoTimer);
+
+    avisoTimer = setTimeout(() => {
+      aviso.hidden = true;
+    }, 2500);
+  }
+
+  // Salva o carrinho e atualiza o contador.
+  function salvar() {
+    try {
+      localStorage.setItem(
+        "bikeCenterCarrinho",
+        JSON.stringify(carrinho)
+      );
+    } catch (erro) {
+      // O carrinho continua funcionando nesta sessão.
+    }
+
+    document.getElementById("contador").textContent =
+      Object.values(carrinho).reduce(
+        (total, quantidade) => total + quantidade,
+        0
+      );
+  }
+
+  // Exibe produtos conforme pesquisa, filtro e ordenação.
+  function renderizar() {
+    const termo = document.getElementById("busca")
+      .value.toLowerCase();
+
+    const categoria = document.getElementById("categoria").value;
+    const ordem = document.getElementById("ordem").value;
+
+    let lista = produtos.filter(produto =>
+      produto.nome.toLowerCase().includes(termo) &&
+      (!categoria || produto.categoria === categoria)
+    );
+
+    if (ordem === "menor") {
+      lista.sort((a,b) => a.preco - b.preco);
+    }
+
+    if (ordem === "maior") {
+      lista.sort((a,b) => b.preco - a.preco);
+    }
+
+    document.getElementById("lista").innerHTML =
+      lista.map(produto => `
+        <article class="card">
+          <img
+            class="card-image"
+            src="${produto.foto}"
+            alt="${produto.nome}"
+            loading="lazy"
+            onclick="detalhar(${produto.id})"
+          >
+          <div class="card-body">
+            <h3>${produto.nome}</h3>
+            <p>${produto.categoria}</p>
+            <div class="price">${dinheiro(produto.preco)}</div>
+            <div class="actions">
+              <button class="secondary"
+                onclick="detalhar(${produto.id})">
+                Ver detalhes
+              </button>
+              <button class="btn"
+                onclick="adicionar(${produto.id})">
+                🛒 Adicionar
+              </button>
+            </div>
+          </div>
+        </article>
+      `).join("") || "<p>Nenhum produto encontrado.</p>";
+  }
+
+  // Abre a janela com detalhes do produto.
+  function detalhar(id) {
+    const produto = produtos.find(p => p.id === id);
+
+    if (!produto) return;
+
+    document.getElementById("conteudoDetalhes").innerHTML = `
+      <h2>${produto.nome}</h2>
+      <img src="${produto.foto}" alt="${produto.nome}">
+      <p><strong>Categoria:</strong> ${produto.categoria}</p>
+      <p>Produto demonstrativo da Bike Center.
+      Consulte a disponibilidade antes de comprar.</p>
+      <h3>${dinheiro(produto.preco)}</h3>
+      <label for="quantidade">Quantidade:</label>
+      <input id="quantidade" type="number"
+        min="1" max="99" value="1">
+      <p>
+        <button class="btn"
+          onclick="adicionarDoDetalhe(${produto.id})">
+          Adicionar ao carrinho
+        </button>
+      </p>
+    `;
+
+    document.getElementById("detalhes").showModal();
+  }
+
+  // Adiciona a quantidade escolhida no modal.
+  function adicionarDoDetalhe(id) {
+    const quantidade = Number(
+      document.getElementById("quantidade").value
+    );
+
+    if (adicionar(id, quantidade)) {
+      document.getElementById("detalhes").close();
+    }
+  }
+
+  // Adiciona um produto ao carrinho.
+  function adicionar(id, quantidade = 1) {
+    if (!Number.isInteger(quantidade) ||
+        quantidade < 1 ||
+        quantidade > 99) {
+      avisar("Informe uma quantidade válida.");
+      return false;
+    }
+
+    carrinho[id] = (carrinho[id] || 0) + quantidade;
+
+    salvar();
+    avisar("Produto adicionado ao carrinho!");
+    return true;
+  }
+
+  // Altera a quantidade de um produto.
+  function alterar(id, valor) {
+    carrinho[id] = (carrinho[id] || 0) + valor;
+
+    if (carrinho[id] <= 0) {
+      delete carrinho[id];
+    }
+
+    salvar();
+    abrirCarrinho();
+  }
+
+  // Exibe o carrinho e calcula o valor total.
+  function abrirCarrinho() {
+    const itens = Object.entries(carrinho);
+    let total = 0;
+
+    document.getElementById("itensCarrinho").innerHTML =
+      itens.map(([id, quantidade]) => {
+        const produto = produtos.find(
+          p => p.id === Number(id)
+        );
+
+        if (!produto) return "";
+
+        const subtotal = produto.preco * quantidade;
+        total += subtotal;
+
+        return `
+          <div class="cart-line">
+            <div>
+              <strong>${produto.nome}</strong>
+              <p>${quantidade} × ${dinheiro(produto.preco)}</p>
+              <small>Subtotal: ${dinheiro(subtotal)}</small>
+            </div>
+            <div>
+              <button aria-label="Diminuir quantidade"
+                onclick="alterar(${id},-1)">−</button>
+              <button aria-label="Aumentar quantidade"
+                onclick="alterar(${id},1)">+</button>
+            </div>
+          </div>
+        `;
+      }).join("") || "<p>Seu carrinho está vazio.</p>";
+
+    document.getElementById("total").textContent =
+      "Total: " + dinheiro(total);
+
+    const janela = document.getElementById("janelaCarrinho");
+
+    if (!janela.open) {
+      janela.showModal();
+    }
+  }
+
+  // Esvazia o carrinho.
+  function limpar() {
+    carrinho = {};
+    salvar();
+    abrirCarrinho();
+    avisar("Carrinho esvaziado.");
+  }
+
+  // Abre uma conversa com o WhatsApp configurado.
+  function abrirWhatsApp(mensagem) {
+    const numero = CONFIG.whatsapp.replace(/\D/g, "");
+
+    if (!numero) {
+      avisar("WhatsApp não configurado.");
+      return;
+    }
+
+    const link = "https://wa.me/" + numero +
+      "?text=" + encodeURIComponent(mensagem);
+
+    window.open(link, "_blank");
+  }
+
+  // Prepara o pedido completo para o WhatsApp.
+  function finalizar() {
+    const itens = Object.entries(carrinho);
+
+    if (itens.length === 0) {
+      avisar("Seu carrinho está vazio.");
+      return;
+    }
+
+    let total = 0;
+    let mensagem = "Olá! Gostaria de fazer um pedido na Bike Center:\n\n";
+
+    itens.forEach(([id, quantidade]) => {
+      const produto = produtos.find(
+        p => p.id === Number(id)
+      );
+
+      if (!produto) return;
+
+      const subtotal = produto.preco * quantidade;
+      total += subtotal;
+
+      mensagem += quantidade + "x " + produto.nome +
+        " — " + dinheiro(subtotal) + "\n";
+    });
+
+    mensagem += "\nTOTAL: " + dinheiro(total);
+    mensagem += "\n\nGostaria de confirmar a disponibilidade e as condições de compra.";
+
+    abrirWhatsApp(mensagem);
+  }
+
+  // Serviços disponíveis na oficina.
+  const servicos = [
+    "Revisão geral",
+    "Regulagem de câmbio",
+    "Regulagem de freios",
+    "Troca de pneus",
+    "Alinhamento de rodas",
+    "Lubrificação",
+    "Montagem de bicicletas",
+    "Manutenção de bicicletas elétricas"
+  ];
+
+  // Desenha os cards da oficina.
+  document.getElementById("servicos").innerHTML =
+    servicos.map((servico, indice) => `
+      <article class="service">
+        <h3>🔧 ${servico}</h3>
+        <p>Atendimento especializado para manter sua bicicleta segura e preparada para pedalar.</p>
+        <button class="btn"
+          onclick="solicitarServico(${indice})">
+          Solicitar orçamento
+        </button>
+      </article>
+    `).join("");
+
+  // Solicita orçamento pelo WhatsApp.
+  function solicitarServico(indice) {
+    const servico = servicos[indice];
+
+    abrirWhatsApp(
+      "Olá! Gostaria de solicitar um orçamento para: " +
+      servico + "."
+    );
+  }
+
+  // Abre o Google Maps quando houver endereço.
+  function abrirMapa() {
+    if (!CONFIG.endereco.trim()) {
+      avisar("O endereço da loja ainda não foi configurado.");
+      return;
+    }
+
+    const link = "https://www.google.com/maps/search/?api=1&query=" +
+      encodeURIComponent(CONFIG.endereco);
+
+    window.open(link, "_blank");
+  }
+
+  // Prepara o e-mail usando o aplicativo do aparelho.
+  document.getElementById("formContato")
+    .addEventListener("submit", function(evento) {
+      evento.preventDefault();
+
+      if (!CONFIG.email) {
+        avisar("O e-mail da loja ainda não foi configurado.");
+        return;
+      }
+
+      const nome = document.getElementById("nome").value;
+      const email = document.getElementById("email").value;
+      const assunto = document.getElementById("assunto").value;
+      const mensagem = document.getElementById("mensagem").value;
+
+      const corpo = "Nome: " + nome +
+        "\nE-mail: " + email +
+        "\n\n" + mensagem;
+
+      window.location.href =
+        "mailto:" + CONFIG.email +
+        "?subject=" + encodeURIComponent(assunto) +
+        "&body=" + encodeURIComponent(corpo);
+    });
+
+  // Liga os controles do catálogo.
+  document.getElementById("busca")
+    .addEventListener("input", renderizar);
+
+  document.getElementById("categoria")
+    .addEventListener("change", renderizar);
+
+  document.getElementById("ordem")
+    .addEventListener("change", renderizar);
+
+  // Atualiza o endereço exibido na página.
+  if (CONFIG.endereco) {
+    document.getElementById("enderecoLoja").textContent =
+      CONFIG.endereco;
+  }
+
+  // Inicializa a loja e o carrinho.
+  renderizar();
+  salvar();
+</script>
+
+</body>
+</html>
+
